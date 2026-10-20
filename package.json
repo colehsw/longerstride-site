@@ -1,0 +1,11 @@
+{
+  "name": "longerstride-site",
+  "private": true,
+  "description": "longerstride.com: the Play Forever Level Check and Play Forever Weekly signup.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "node --test tests/*.test.js",
+    "preview": "node scripts/preview.js"
+  }
+}
