@@ -9,6 +9,7 @@ The Longer Stride website. Today it is one thing: the **Play Forever Level Check
   - `config.js`: public settings, including the Meta Pixel ID.
   - `privacy.html`: privacy page, at `/privacy`.
   - `og.png`: the picture shown when the link is shared on Facebook, iMessage and so on.
+- `content/drills.js`, `content/warm-up.js`: the words for the 20 drill pages (`/drills/...`) and the warm-up (`/warm-up`). Edit there, then run `npm run build`, which writes the pages into `public/`.
 - `api/subscribe.js`: the email signup. It re-scores the answers on the server, then sends the player to Klaviyo.
 - `tests/`: `npm test`.
 
@@ -19,7 +20,7 @@ The Longer Stride website. Today it is one thing: the **Play Forever Level Check
 3. The server scores the answers again (so nobody can fake a level) and in Klaviyo:
    - creates or updates their profile with `lc_level`, `lc_level_range`, `lc_leak_1..3` (and `_id`), `lc_goal`, `lc_age_band`, `lc_practice_sessions`, `lc_utm_source`, `lc_utm_campaign` and the rest of the `lc_` fields;
    - subscribes them to the Play Forever Weekly list with email marketing consent, source "Level Check";
-   - records a **Completed Level Check** event with the plan: `level`, `label`, and the plan as `week1_skill`, `week1_drill`, `week1_pass` through `week3_`.
+   - records a **Completed Level Check** event with the plan: `level`, `label`, and the plan as `week1_skill`, `week1_drill`, `week1_pass`, `week1_url` (the full drill page) through `week3_`.
 4. If the Meta Pixel ID is set, the browser fires `Lead`, so Meta can optimize ads for signups.
 
 ## Go-live checklist
@@ -29,7 +30,7 @@ The Longer Stride website. Today it is one thing: the **Play Forever Level Check
 2. Create a private API key (Settings > API keys) with full access to **Profiles, Lists, Subscriptions and Events**.
 3. Add your sending domain (Settings > Domains), for example `send.longerstride.com`, and put the DNS records it gives you into GoDaddy. Without this, emails land in spam.
 4. Put the business mailing address in the email footer settings (the law requires one).
-5. Build the welcome flow: trigger **Completed Level Check**. Email 1 goes right away with the plan. In the template, `{{ event.label }}` is the level line and `{{ event.week1_skill }}`, `{{ event.week1_drill }}`, `{{ event.week1_pass }}` are week 1 (`week2_` and `week3_` for the next two, sent a week apart).
+5. Build the welcome flow: trigger **Completed Level Check**. Email 1 goes right away with the plan. In the template, `{{ event.label }}` is the level line and `{{ event.week1_skill }}`, `{{ event.week1_drill }}`, `{{ event.week1_pass }}` and `{{ event.week1_url }}` are week 1 (`week2_` and `week3_` for the next two, sent a week apart).
 6. For the Weekly's level-matched drill, make segments on `lc_level` (for example up to 3.0, 3.25 to 3.75, 4.0 and up).
 
 ### 2. Vercel
@@ -52,7 +53,7 @@ The Longer Stride website. Today it is one thing: the **Play Forever Level Check
 - Make sure `hello@longerstride.com` receives mail (GoDaddy email forwarding is enough), since the privacy page lists it.
 
 ## Working on it
-- `npm test`: scoring, answer checks and the Klaviyo mapping.
+- `npm test`: scoring, answer checks, the Klaviyo mapping, and that drill pages match the scoring engine and are rebuilt.
 - `npm run preview`: local preview at http://localhost:3000 without Vercel. With no Klaviyo key set it fakes Klaviyo and prints what it would send. `PREVIEW_FAIL=1` shows the "couldn't save your email" state.
 - `vercel dev` also works if you have the Vercel CLI.
 

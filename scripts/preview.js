@@ -34,7 +34,7 @@ http.createServer((req, res) => {
     return;
   }
   let p = url.pathname === '/' || url.pathname === '/level-check' ? '/index.html' : url.pathname;
-  if (!path.extname(p)) p += '.html';
+  if (!path.extname(p)) p = fs.existsSync(path.join(ROOT, p, 'index.html')) ? p + '/index.html' : p + '.html';
   const file = path.join(ROOT, path.normalize(p));
   if (!file.startsWith(ROOT) || !fs.existsSync(file)) { res.statusCode = 404; return res.end('Not found'); }
   res.setHeader('content-type', TYPES[path.extname(file)] || 'application/octet-stream');

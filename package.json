@@ -5,6 +5,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "dev": "vercel dev",
+    "build": "node scripts/build.js",
     "test": "node --test tests/*.test.js",
     "preview": "node scripts/preview.js"
   }

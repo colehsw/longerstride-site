@@ -145,3 +145,19 @@ details summary { cursor: pointer; font-weight: 700; min-height: 32px; }
 .prose ul { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 6px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* drill and warm-up pages */
+.prose ol { margin: 0; padding-left: 1.5rem; display: flex; flex-direction: column; gap: 8px; }
+.drill-facts { grid-template-columns: 1fr 2fr; }
+.facts b.small { font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; line-height: 1.35; }
+.card.pass { background: var(--court-soft); border-color: transparent; }
+.pass-line { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; }
+.drill-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.drill-links a { display: flex; gap: 10px; align-items: baseline; min-height: 48px; padding: 10px 0; color: var(--ink); font-weight: 700; }
+.drill-links .pill { min-width: 6.5rem; }
+ol.moves { list-style: none; padding: 0; }
+.moves h2 { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.moves .time { font-family: var(--font-body); font-size: 1rem; font-weight: 400; }
+.prose .btn { text-decoration: none; display: inline-flex; align-items: center; }
+.drill-more { font-weight: 700; color: var(--ink); min-height: 48px; display: inline-flex; align-items: center; }
+@media (max-width: 380px) { .drill-facts { grid-template-columns: 1fr; } }

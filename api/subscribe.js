@@ -6,6 +6,7 @@
 // Needs KLAVIYO_PRIVATE_KEY and KLAVIYO_LIST_ID in the Vercel environment. The key never reaches the browser.
 const { score } = require('../public/scoring.js');
 const Quiz = require('../public/quiz.js');
+const DRILL_PAGES = require('../content/drills.js');
 
 const KLAVIYO = 'https://a.klaviyo.com/api';
 const REVISION = '2024-10-15';
@@ -54,6 +55,7 @@ function build(body) {
     eventProps[`week${i + 1}_skill`] = l.name;
     eventProps[`week${i + 1}_drill`] = l.drill;
     eventProps[`week${i + 1}_pass`] = l.pass;
+    eventProps[`week${i + 1}_url`] = `https://longerstride.com/drills/${DRILL_PAGES[l.id].slug}-${l.drillType.toLowerCase()}`;
   });
 
   const firstName = str(body.first_name, 60);

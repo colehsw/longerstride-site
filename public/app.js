@@ -133,13 +133,15 @@ function showSignup() {
   const box = document.getElementById('signup');
   if (!box) return;
   if (signup === 'sending') box.innerHTML = '<p class="muted">Saving your plan…</p>';
-  else if (signup === 'done') box.innerHTML = `<p>We'll email each week's drill to <b>${esc(person.email)}</b>. Check your inbox for week 1.</p>`;
+  else if (signup === 'done') box.innerHTML = `<p>We'll email each week's drill to <b>${esc(person.email)}</b>, with step-by-step instructions. Check your inbox for week 1.</p>`;
   else if (signup === 'failed') {
     box.innerHTML = `<div class="notice" role="alert"><p>We couldn't save your email just now, so your plan won't arrive yet.</p>
       <div class="row"><button class="btn" id="retry">Try again</button></div></div>`;
     document.getElementById('retry').onclick = send;
   } else box.innerHTML = '';
 }
+
+const drillUrl = l => `/drills/${(window.DRILL_LINKS || {})[l.id]}-${l.drillType.toLowerCase()}`;
 
 const SESSIONS = ['One 10-minute drill before your games', 'One 30-minute practice session', 'Two practice sessions', 'Two or three practice sessions'];
 
@@ -172,11 +174,12 @@ function renderResult() {
       ${leaks.map((l, i) => `<div class="card leak"><span class="n">${i + 1}</span><div>
         <h3>${esc(l.name)}</h3>
         <span class="pill">${l.drillType} drill</span>
-        <p>${esc(l.drill)}.</p><p class="muted">You've got it when: ${esc(l.pass)}.</p></div></div>`).join('')}
+        <p>${esc(l.drill)}.</p><p class="muted">You've got it when: ${esc(l.pass)}.</p>
+        <a class="drill-more" href="${drillUrl(l)}">See the full drill</a></div></div>`).join('')}
     </div>
 
     <div class="card"><h2>Your 30-day plan</h2>
-      <p class="muted">Each week: ${esc(sess.toLowerCase())}. Start every session with the 5-Minute Play Forever Warm-Up.</p>
+      <p class="muted">Each week: ${esc(sess.toLowerCase())}. Start every session with the <a href="/warm-up">5-Minute Play Forever Warm-Up</a>.</p>
       <ul class="weeks">
         <li><b>Week 1</b><span>${esc(leaks[0].name)} drill</span></li>
         <li><b>Week 2</b><span>${esc(leaks[1].name)} drill, plus 5 minutes of week 1</span></li>
