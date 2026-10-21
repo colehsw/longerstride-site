@@ -18,10 +18,29 @@ function fakeRes() {
   return r;
 }
 
-test('scoring engine is unchanged: Linda with an open-play anchor lands at 3.25', () => {
+test('scoring rounds to the nearest 0.1: Linda with an open-play anchor lands at 3.2', () => {
   const r = score(Quiz.toEngine(LINDA));
-  assert.strictEqual(r.L, 3.25);
+  assert.strictEqual(r.L, 3.2);
+  assert.deepStrictEqual(r.range, [2.9, 3.5]);
+  assert.strictEqual(r.label, 'A solid 3.0');
   assert.strictEqual(r.leaks.length, 3);
+});
+
+test('levels and ranges are always whole tenths', () => {
+  for (const c of [2.0, 2.5, 3.0, 3.5, 3.75, 4.25, 4.5, 4.75]) {
+    const a = { ...LINDA, C1: c > 4.25 ? 4.25 : c >= 3.5 ? 3.5 : 3.0, C3: c >= 4.5 ? 4.5 : c >= 3.75 ? 3.75 : 3.25, B3: c >= 4.5 ? 4.5 : 3.0 };
+    const r = score(Quiz.toEngine(a));
+    for (const v of [r.L, ...r.range]) assert.strictEqual(Math.round(v * 10) / 10, v);
+  }
+});
+
+test('new answer options are accepted', () => {
+  assert.ok(Quiz.clean({ ...LINDA, A1: 'u30' }));
+  assert.ok(Quiz.clean({ ...LINDA, A1: '30-39' }));
+  const r = score(Quiz.toEngine(Quiz.clean({ ...LINDA, D1: 'C10' })));
+  assert.ok(r.leaks.length === 3);
+  const d1 = Quiz.QUESTIONS.find(q => q.id === 'D1').opts.map(o => o[0]);
+  assert.ok(d1.includes('When I make an easy mistake') && d1.includes('When I go for the wrong type of shot'));
 });
 
 test('clean() keeps known answers and rejects made-up values', () => {
@@ -45,7 +64,8 @@ test('build() scores on the server and maps to Klaviyo', () => {
   const out = handler.build(body({ level: 5 }));
   assert.strictEqual(out.email, 'linda@example.com');
   const p = out.profile.data.attributes;
-  assert.strictEqual(p.properties.lc_level, 3.25);
+  assert.strictEqual(p.properties.lc_level, 3.2);
+  assert.strictEqual(p.properties.lc_level_range, '2.9-3.5');
   assert.strictEqual(p.properties.lc_utm_source, 'meta');
   assert.strictEqual(p.properties.lc_bogus, undefined);
   assert.strictEqual(p.location.zip, '37205');

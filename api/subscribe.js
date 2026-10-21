@@ -27,7 +27,7 @@ function build(body) {
   if (!answers) return { error: 'Some quiz answers are missing. Please retake the quiz.' };
 
   const r = score(Quiz.toEngine(answers));
-  const range = `${r.range[0].toFixed(2)}-${r.range[1].toFixed(2)}`;
+  const range = `${r.range[0].toFixed(1)}-${r.range[1].toFixed(1)}`;
   const utm = {};
   const rawUtm = body.utm && typeof body.utm === 'object' ? body.utm : {};
   UTM_KEYS.forEach(k => { const v = str(rawUtm[k], 200); if (v) utm[k] = v; });

@@ -159,9 +159,9 @@ function renderResult() {
     ${isSample ? '<p class="notice">This is a sample result for Linda, 62. Take the quiz to get your own.</p>' : ''}
     <div class="hero">
       <p class="eyebrow">${person.name ? esc(person.name) + "'s" : 'Your'} estimated level</p>
-      <div class="levelnum"><div class="ball" aria-hidden="true">${r.L.toFixed(2)}</div>
-        <div class="lbl"><h1 class="result-h">${esc(r.label)}</h1><p class="muted">Likely range ${r.range[0].toFixed(2)} to ${r.range[1].toFixed(2)}</p></div></div>
-      <div class="scale" role="img" aria-label="Level ${r.L.toFixed(2)} on a scale from 2.0 to 5.0, range ${r.range[0].toFixed(2)} to ${r.range[1].toFixed(2)}">
+      <div class="levelnum"><div class="ball" aria-hidden="true">${r.L.toFixed(1)}</div>
+        <div class="lbl"><h1 class="result-h">${esc(r.label)}</h1><p class="muted">Likely range ${r.range[0].toFixed(1)} to ${r.range[1].toFixed(1)}</p></div></div>
+      <div class="scale" role="img" aria-label="Level ${r.L.toFixed(1)} on a scale from 2.0 to 5.0, range ${r.range[0].toFixed(1)} to ${r.range[1].toFixed(1)}">
         <div class="track"></div>
         <div class="band" style="left:${pos(r.range[0])}%;width:${pos(r.range[1]) - pos(r.range[0])}%"></div>
         <div class="dot" style="left:${pos(r.L)}%"></div>
@@ -203,7 +203,7 @@ function renderResult() {
         <dt>Playing history</dt><dd>${f2(r.P)}</dd>
         ${anchorsTxt}
         <dt>Blended (skills count 3×)</dt><dd>${f2(r.Lraw)}</dd>
-        <dt>Rounded to nearest 0.25</dt><dd>${r.L.toFixed(2)}</dd>
+        <dt>Rounded to nearest 0.1</dt><dd>${r.L.toFixed(1)}</dd>
       </dl>
     </details>
 

@@ -30,16 +30,16 @@ const DRILLS = {
 const DUPR_VALUES = { u3: 2.75, '3.0': 3.25, '3.5': 3.75, '4.0': 4.25, '4.5': 4.75 };
 
 const r2 = x => Math.round(x * 100) / 100;
-const roundQ = x => Math.round(x * 4) / 4;
+const round1 = x => Math.round(x * 10) / 10;
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const bandIndex = L => (L <= 3.0 ? 0 : L <= 3.75 ? 1 : 2);
 
 function levelLabel(L) {
+  // 3.0 to 3.2 reads "A solid 3.0"; 3.3 and 3.4 read "A solid 3.0, knocking on 3.5".
   const f = x => x.toFixed(1);
-  const frac = Math.round((L % 0.5) * 100) / 100;
-  if (frac === 0) return `A solid ${f(L)}`;
-  return `A solid ${f(L - 0.25)}, knocking on ${f(L + 0.25)}`;
-
+  const base = Math.floor(round1(L) * 2 + 1e-9) / 2;
+  if (round1(L - base) < 0.3) return `A solid ${f(base)}`;
+  return `A solid ${f(base)}, knocking on ${f(base + 0.5)}`;
 }
 
 // a = answers: { A2, A3, A4, C1..C10 (levels), D1 (skill id), D3, dupr: {value, matches}|null, tourney: {level, medal}|null, openPlay: number|null }
@@ -71,17 +71,17 @@ function score(a) {
 
   const sumA = anchors.reduce((t, x) => t + x.w, 0);
   const Lraw = (3 * S + P + anchors.reduce((t, x) => t + x.w * x.value, 0)) / (4 + sumA);
-  const L = clamp(roundQ(Lraw), 2.0, 5.0);
+  const L = clamp(round1(Lraw), 2.0, 5.0);
 
   let half;
   const dupr10 = a.dupr && a.dupr.matches === '10+';
-  if (dupr10) half = 0.25;
-  else if (anchors.length) half = anchors.every(x => Math.abs(x.value - S) <= 0.5) ? 0.25 : 0.5;
+  if (dupr10) half = 0.3;
+  else if (anchors.length) half = anchors.every(x => Math.abs(x.value - S) <= 0.5) ? 0.3 : 0.5;
   else half = 0.5;
   const mean = vals.reduce((t, v) => t + v, 0) / vals.length;
   const sd = Math.sqrt(vals.reduce((t, v) => t + (v - mean) ** 2, 0) / vals.length);
-  if (sd > 0.6) half += 0.25;
-  const range = [clamp(L - half, 2.0, 5.0), clamp(L + half, 2.0, 5.0)];
+  if (sd > 0.6) half += 0.2;
+  const range = [clamp(round1(L - half), 2.0, 5.0), clamp(round1(L + half), 2.0, 5.0)];
 
   // Leaks
   const b = bandIndex(L), next = Math.min(2, b + 1);
