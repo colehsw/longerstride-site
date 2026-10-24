@@ -1,6 +1,8 @@
 # longerstride.com
 
-The Longer Stride website. Today it is one thing: the **Play Forever Level Check**, the free pickleball level quiz that signs players up for the **Play Forever Weekly** newsletter. More pages (the Club, products) get added here later.
+> **Moved (2026-10-24):** the Level Check now lives on Pickle Roll Call at https://www.picklerollcall.com/level-check, and ads go there. `/` and `/level-check` here redirect to it (vercel.json, query strings and UTMs carried along). The drill pages and privacy page stay.
+
+The Longer Stride website. Until then it was one thing: the **Play Forever Level Check**, the free pickleball level quiz that signs players up for the **Play Forever Weekly** newsletter. More pages (the Club, products) get added here later.
 
 - `public/`: the site. Plain HTML, CSS and JavaScript, no build step.
   - `index.html` + `app.js`: the quiz screens. Also served at `/level-check`.

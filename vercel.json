@@ -3,7 +3,10 @@
   "buildCommand": "",
   "outputDirectory": "public",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/level-check", "destination": "/" }],
+  "redirects": [
+    { "source": "/", "destination": "https://www.picklerollcall.com/level-check", "permanent": false },
+    { "source": "/level-check", "destination": "https://www.picklerollcall.com/level-check", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/(.*)",
